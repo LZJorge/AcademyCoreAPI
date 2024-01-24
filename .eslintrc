@@ -1,0 +1,36 @@
+{
+    "root": true,
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+      "@typescript-eslint",
+      "jest"
+    ],
+    "extends": [
+      "eslint:recommended",
+      "plugin:@typescript-eslint/eslint-recommended",
+      "plugin:@typescript-eslint/recommended",
+      "plugin:jest/recommended",
+      "plugin:jest/style"
+    ],
+    "rules": {  
+      "quotes": ["warn", "single"],
+      "semi": ["error", "always"],
+      "curly": "error",
+      "indent": ["error", 4],
+      
+      "@typescript-eslint/no-unused-vars": "error",
+      "@typescript-eslint/no-empty-function": "error",
+      "@typescript-eslint/no-var-requires": "error",
+      "@typescript-eslint/ban-ts-comment": "error",
+      "@typescript-eslint/no-explicit-any": "off",
+
+      "jest/no-disabled-tests": "warn",
+      "jest/no-focused-tests": "error",
+      "jest/no-identical-title": "error",
+      "jest/prefer-to-have-length": "warn",
+      "jest/valid-expect": "error"
+    },
+    "env": {
+      "jest": true
+    }
+}
