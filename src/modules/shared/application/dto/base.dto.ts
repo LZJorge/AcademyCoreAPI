@@ -17,7 +17,6 @@ export abstract class BaseDto<T extends object> {
     async validate(): Promise<Result<T, EntityValidationError>> {
         const result = await this.schema.safeParseAsync(this.data);
         if(!result.success && result.error) {
-            console.log(result.error.issues);
             return { isSuccess: false, error: new EntityValidationError(result.error.issues) };
         }
         return { isSuccess: true, value: this.data };

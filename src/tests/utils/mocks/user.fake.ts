@@ -1,6 +1,11 @@
 import { faker } from '@faker-js/faker';
 import { User } from '@user/domain/entity/user.entity';
 import { userValues } from '@user/domain/values/user.values';
+import { Student } from '@student/domain/entity/student.entity';
+
+/**
+ * Creates Fake User
+ */
 function generateDni(): string {
     const index = Math.floor(Math.random() * userValues.dni.types.length);
     return userValues.dni.types[index] + '-' + faker.string.numeric({ length: userValues.dni.digits });
@@ -13,8 +18,8 @@ export function generateFakeUser(): User {
     return new User({
         id: faker.string.uuid(),
         dni: generateDni(),
-        firstname: faker.person.firstName(),
-        lastname: faker.person.lastName(),
+        firstname: faker.helpers.fromRegExp('[A-Za-záéíóúñÁÉÍÓÚ]{3,64}'),
+        lastname: faker.helpers.fromRegExp('[A-Za-záéíóúñÁÉÍÓÚ]{3,64}'),
         birthdate: faker.date.birthdate(),
         email: faker.internet.email(),
         phone: generatePhoneNumber(),
@@ -28,4 +33,25 @@ export function generateManyFakeUser(amount: number): User[] {
         users.push(generateFakeUser());
     }
     return users;
+}
+
+/**
+ * Creates Fake Student with his user
+ */
+export function generateFakeStudent(): Student {
+    const user = generateFakeUser();
+    return new Student({
+        id: faker.string.uuid(),
+        courses_completed: faker.number.int({ min: 0, max: 12 }),
+        is_active: faker.datatype.boolean(),
+        user_id: user.id,
+        user
+    });
+}
+export function generateManyFakeStudent(amount: number): Student[] {
+    const students: Student[] = [];
+    for(let i = 1; i <= amount; i++) {
+        students.push(generateFakeStudent());
+    }
+    return students;
 }
