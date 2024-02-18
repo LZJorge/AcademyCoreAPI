@@ -32,7 +32,7 @@ describe('Transaction Manager Test', () => {
         const query_4 = studentRepositoryMock.findOne(student.id);
 
         it('Should execute all queries in a transaction and rollback if any fails', async() => {
-            client.$transaction.mockRejectedValueOnce(new Error())
+            client.$transaction.mockRejectedValueOnce(new Error());
             const transaction = new Transaction();
             transaction.add(query_1);
             transaction.add(query_2);
@@ -41,14 +41,16 @@ describe('Transaction Manager Test', () => {
             /* Act */
             try {   
                 await manager.commit(transaction);
-            } catch (error) {} 
+            } catch (error) { 
+                console.log(error);
+            } 
 
             /* Assert */
-            expect(client.$transaction).toHaveBeenCalledTimes(1)
+            expect(client.$transaction).toHaveBeenCalledTimes(1);
         });
 
         it('Should execute all queries in a transaction and commit if all succeed', async() => {
-            client.$transaction.mockResolvedValueOnce([ student, user, user ])
+            client.$transaction.mockResolvedValueOnce([ student, user, user ]);
             const transaction = new Transaction();
             transaction.add(query_1);
             transaction.add(query_2);
@@ -58,7 +60,7 @@ describe('Transaction Manager Test', () => {
             const queries = await manager.commit(transaction);
 
             /* Assert */
-            expect(client.$transaction).toHaveBeenCalledTimes(1)
+            expect(client.$transaction).toHaveBeenCalledTimes(1);
 
             expect(queries[0]).toEqual(student);
             expect(queries[1]).toEqual(user);

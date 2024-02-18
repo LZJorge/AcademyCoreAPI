@@ -29,7 +29,7 @@ describe('Student Repository Tests', () => {
                     courses_completed: student.courses_completed,
                     user_id: student.user_id
                 }
-            })
+            });
         });
     });
 
@@ -45,7 +45,7 @@ describe('Student Repository Tests', () => {
             expect(client.student.findUnique).toHaveBeenCalledWith({
                 where: { id: student.id },
                 include: { user: true }
-            })
+            });
         });
 
         it('should find student by user_id:', async () => {
@@ -56,13 +56,13 @@ describe('Student Repository Tests', () => {
             expect(client.student.findUnique).toHaveBeenCalledWith({
                 where: { user_id: student.user_id },
                 include: { user: true }
-            })
+            });
         });
 
         it('should find student by user dni:', async () => {
             client.student.findFirst.mockResolvedValue(student);
             if(!student.user) {
-                throw new Error('Undefined User')
+                throw new Error('Undefined User');
             }
 
             const result = await repository.findOneByUserDni(student.user.dni);
@@ -71,7 +71,7 @@ describe('Student Repository Tests', () => {
             expect(client.student.findFirst).toHaveBeenCalledWith({
                 where: { user: { dni: student.user.dni } },
                 include: { user: true }
-            })
+            });
         });
 
         it('should find all students:', async () => {
@@ -98,7 +98,7 @@ describe('Student Repository Tests', () => {
         it('should find all students by some user param:', async () => {
             client.student.findMany.mockResolvedValue([student]);
             if(!student.user) {
-                throw new Error('Undefined User')
+                throw new Error('Undefined User');
             }
             let result = await repository.findAllByUserParam('email', student.user.email);
             expect(result).toBeDefined();
@@ -125,9 +125,9 @@ describe('Student Repository Tests', () => {
         const newData = generateFakeStudent();
 
         it('should return updated student:', async () => {
-            let updated = { ...student, courses_completed: newData.courses_completed, is_active: newData.is_active };
+            const updated = { ...student, courses_completed: newData.courses_completed, is_active: newData.is_active };
             client.student.update.mockResolvedValueOnce(updated);
-            let result = await repository.update(updated);
+            const result = await repository.update(updated);
             expect(result).toBeDefined();
             expect(result).toMatchObject(updated);
             expect(client.student.update).toHaveBeenCalledWith({
@@ -137,7 +137,7 @@ describe('Student Repository Tests', () => {
                     courses_completed: updated.courses_completed
                 },
                 include: { user: true }
-            })
+            });
         });
     });
 
@@ -153,7 +153,7 @@ describe('Student Repository Tests', () => {
             expect(client.student.delete).toHaveBeenCalledWith({
                 where: { id: student.id }
             });
-            expect(client.student.findUnique).toHaveBeenCalledWith({ where: { id: student.id }})
+            expect(client.student.findUnique).toHaveBeenCalledWith({ where: { id: student.id }});
         });
     });
 });

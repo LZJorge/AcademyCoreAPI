@@ -7,7 +7,7 @@ export class StudentRepository implements IStudentRepository {
     constructor(private readonly client: PrismaClient) {}
     
     async create(data: Student): Promise<Student | null> {
-        return await this.client.student.create({
+        return this.client.student.create({
             data: {
                 id: data.id,
                 is_active: data.is_active,
@@ -18,21 +18,21 @@ export class StudentRepository implements IStudentRepository {
     }
     
     async findOne(id: string): Promise<Student | null> {
-        return await this.client.student.findUnique({
+        return this.client.student.findUnique({
             where: { id },
             include: { user: true }
         });
     }
 
     async findOneByUserId(user_id: string): Promise<Student | null> {
-        return await this.client.student.findUnique({
+        return this.client.student.findUnique({
             where: { user_id },
             include: { user: true }
         });
     }
     
     async findOneByUserDni(user_dni: string): Promise<Student | null> {
-        return await this.client.student.findFirst({
+        return this.client.student.findFirst({
             where: { user: {
                 dni: user_dni
             } },
@@ -41,27 +41,27 @@ export class StudentRepository implements IStudentRepository {
     }
     
     async findAll(): Promise<Student[]> {
-        return await this.client.student.findMany({
+        return this.client.student.findMany({
             include: { user: true }
         });
     }
     
     async findAllBy(param: keyof Student, value: unknown): Promise<Student[]> {
-        return await this.client.student.findMany({
+        return this.client.student.findMany({
             where: { [param]: value },
             include: { user: true }
         });
     }
     
     async findAllByUserParam(param: keyof User, value: unknown): Promise<Student[]> {
-        return await this.client.student.findMany({
+        return this.client.student.findMany({
             where: { user: { [param]: value } },
             include: { user: true }
         });
     }
     
     async update(data: Partial<Student>): Promise<Student | null> {
-        return await this.client.student.update({
+        return this.client.student.update({
             where: { id: data.id },
             data: {
                 is_active: data.is_active,

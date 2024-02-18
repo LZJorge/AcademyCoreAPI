@@ -6,8 +6,8 @@ export class Student extends Entity {
     user_id: string;
     user?: User;
 
-    constructor(data: Student) {
-        super(data.id);
-        Object.assign(this, data);
+    constructor(student: Student) {
+        super(student.id);
+        Object.assign(this, student);
     }
 }
