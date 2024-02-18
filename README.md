@@ -8,6 +8,7 @@
   - [General Information](#general-information)
   - [Technologies Used](#technologies-used)
   - [Features](#features)
+  - [Folder Structure](#folder-structure)
   - [Setup](#setup)
       - [Testing](#testing)
   - [Usage](#usage)
@@ -42,6 +43,114 @@ I undertook this project because I am passionate about web development and I enj
 
 ## Features
 - Creation and management of users
+
+
+## Folder Structure
+```
+└── 📁src
+    └── app.ts
+    └── main.ts
+    └── 📁modules
+        └── 📁shared
+            └── 📁application
+                └── 📁dto
+                    └── base.dto.ts
+            └── 📁domain
+                └── 📁entities
+                    └── base.entity.ts
+                └── 📁exceptions
+                    └── base.exception.ts
+                    └── entity.validation.exception.ts
+                    └── handleValidationError.ts
+                    └── http.exception.ts
+                    └── http.statusCodes.ts
+                └── 📁repositories
+                    └── base.repository.ts
+                    └── transaction.ts
+                └── 📁responses
+                    └── base.response.ts
+                └── 📁result
+                    └── result.ts
+                └── 📁usecases
+                    └── base.usecase.ts
+            └── 📁infrastructure
+                └── 📁config
+                    └── swagger.ts
+                └── 📁helpers
+                    └── id.helper.ts
+                    └── password.helper.ts
+                └── 📁middlewares
+                    └── errorHandler.ts
+                └── 📁repositories
+                    └── transaction.ts
+        └── 📁student
+            └── 📁application
+                └── create-student.ts
+            └── 📁domain
+                └── 📁entity
+                    └── student.entity.ts
+                └── 📁repository
+                    └── student.repository.ts
+            └── 📁infrastructure
+                └── 📁repository
+                    └── 📁__tests__
+                        └── student.repository.test.ts
+                    └── student.repository.ts
+        └── 📁user
+            └── 📁application
+                └── 📁__tests__
+                    └── user.service.test.ts
+                └── 📁dto
+                    └── 📁__tests__
+                        └── create-user.dto.test.ts
+                        └── dni.dto.test.ts
+                        └── update-user.dto.test.ts
+                    └── create-user.dto.ts
+                    └── dni.dto.ts
+                    └── find-all-by.dto.ts
+                    └── update-user.dto.ts
+                └── 📁responses
+                    └── create-user.ts
+                    └── find-many-user.ts
+                    └── find-one-user.ts
+                    └── update-user.ts
+                └── 📁useCases
+                    └── 📁__tests__
+                        └── all.usecase.test.ts
+                    └── create.ts
+                    └── find-all-by-param.ts
+                    └── find-all.ts
+                    └── find-one-by-dni.ts
+                    └── find-one-by-id.ts
+                    └── update-dni.ts
+                    └── update.ts
+                └── user.service.ts
+            └── 📁domain
+                └── 📁entity
+                    └── user.entity.ts
+                └── 📁exceptions
+                    └── user.exceptions.ts
+                └── 📁repository
+                    └── user.repository.ts
+                └── 📁values
+                    └── 📁__tests__
+                        └── canSearchUserBy.test.ts
+                    └── canSearchUserBy.ts
+                    └── user.values.ts
+            └── 📁infrastructure
+                └── 📁repository
+                    └── 📁__tests__
+                        └── user.repository.test.ts
+                    └── user.repository.ts
+    └── 📁tests
+        └── 📁lib
+            └── 📁mocks
+                └── prisma.mock.ts
+        └── setup.ts
+        └── 📁utils
+            └── 📁mocks
+                └── user.fake.ts
+```
 
 
 ## Setup

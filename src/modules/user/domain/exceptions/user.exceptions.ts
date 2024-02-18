@@ -7,8 +7,8 @@ export enum UserExceptions {
     USER_NOT_FOUND = 'No se encontró ningún usuario mediante el parámetro proporcionado',
     INVALID_DNI = 'Ha introducido una cédula inválida',
 
-    USERNAME_TOO_SHORT = 'El nombre es demasiado corto',
-    USERNAME_TOO_LONG = 'El nombre es demasiado largo',
+    FIRSTNAME_TOO_SHORT = 'El nombre es demasiado corto',
+    FIRST_TOO_LONG = 'El nombre es demasiado largo',
 
     LASTNAME_TOO_SHORT = 'El apellido es demasiado corto',
     LASTNAME_TOO_LONG = 'El apellido es demasiado largo',

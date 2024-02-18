@@ -1,6 +1,6 @@
 {
   "name": "AcademyCoreAPI",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "API for management of students from a university or academy",
   "main": "dist/index.js",
   "private": false,
@@ -11,8 +11,8 @@
   "scripts": {
     "start": "cross-env NODE_ENV=production node dist/main.js",
     "build": "tsc && tsc-alias",
-    "dev": "cross-env NODE_ENV=development ts-node-dev -r tsconfig-paths/register src/main.ts",
-    "test": "cross-env NODE_ENV=test jest --no-cache --detectOpenHandles",
+    "dev": "cross-env NODE_ENV=development ts-node-dev -r tsconfig-paths/register src/modules/shared/infrastructure/repository/__tests__/transaction.manager.ts",
+    "test": "cross-env NODE_ENV=test jest --no-cache --verbose --detectOpenHandles",
     "test:watch": "cross-env NODE_ENV=test jest --watch --no-cache --verbose --detectOpenHandles",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",

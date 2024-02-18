@@ -4,9 +4,9 @@ import { UpdateUserDto, IUpdateUserDto } from '@user/application/dto/update-user
 import { UserNotFoundError } from '@user/domain/exceptions/user.exceptions';
 import { UpdateUserResponse } from '@user/application/responses/update-user';
 
-export async function findAndUpdateUser(id: string, dto: IUpdateUserDto, ctx: IUserRepository): Promise<UpdateUserResponse> {
-    const data = new UpdateUserDto(dto);
-    const validationResult = await data.validate();
+export async function findAndUpdateUser(id: string, data: IUpdateUserDto, ctx: IUserRepository): Promise<UpdateUserResponse> {
+    const dto = new UpdateUserDto(data);
+    const validationResult = await dto.validate();
     if(!validationResult.isSuccess) {
         return { isSuccess: false, error: validationResult.error };
     }

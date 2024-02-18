@@ -5,30 +5,30 @@ import { IUserRepository } from '@user/domain/repository/user.repository';
 export class UserRepository implements IUserRepository {
     constructor(private readonly client: PrismaClient) {}
 
-    async create(data: User): Promise<User | null> {
-        return await this.client.user.create({ data });
+    create(data: User): Promise<User | null> {
+        return this.client.user.create({ data });
     }
 
     async findOne(id: string): Promise<User | null> {
-        return await this.client.user.findUnique({ where: { id } });
+        return this.client.user.findUnique({ where: { id } });
     }
 
     async findByDni(dni: string): Promise<User | null> {
-        return await this.client.user.findUnique({ where: { dni } });
+        return this.client.user.findUnique({ where: { dni } });
     }
 
-    async findAll(): Promise<User[]> {
-        return await this.client.user.findMany();
+    findAll(): Promise<User[]> {
+        return this.client.user.findMany();
     }
 
     async findAllBy(param: keyof User, value: unknown): Promise<User[]> {
-        return await this.client.user.findMany({
+        return this.client.user.findMany({
             where: { [param]: value }
         });
     }
 
     async update(data: Partial<User>): Promise<User | null> {
-        return await this.client.user.update({
+        return this.client.user.update({
             where: { id: data.id },
             data: {
                 firstname: data.firstname,
@@ -42,7 +42,7 @@ export class UserRepository implements IUserRepository {
     }
 
     async updateDni(data: User): Promise<User | null> {
-        return await this.client.user.update({
+        return this.client.user.update({
             where: { id: data.id },
             data: {
                 dni: data.dni,
