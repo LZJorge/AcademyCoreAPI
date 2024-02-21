@@ -27,7 +27,11 @@ export async function findManyStudentsByUserParam(dto: FindAllByDto, repository:
     transaction.add(repository.findAllByUserParam(dto.param, dto.value));
 
     // Execute transaction
-    const [students] = await manager.commit<Student[]>(transaction);
+    let [students] = await manager.commit<Student[]>(transaction);
+
+    if(!students) {
+        students = []
+    }
 
     return { isSuccess: true, value: students };
 }

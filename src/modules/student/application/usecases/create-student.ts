@@ -43,5 +43,6 @@ export async function createStudent(data: ICreateUserDto, repositories: Required
     // Execute transaction
     await manager.commit(transaction);
 
+    student.user = user;
     return { isSuccess: true, value: student };
 }

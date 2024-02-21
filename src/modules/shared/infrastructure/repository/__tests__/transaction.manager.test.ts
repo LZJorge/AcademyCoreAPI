@@ -38,15 +38,19 @@ describe('Transaction Manager Test', () => {
             transaction.add(query_2);
             transaction.add(query_4);
 
+            let err = undefined;
+
             /* Act */
             try {   
                 await manager.commit(transaction);
             } catch (error) { 
-                console.log(error);
+                err = error;
             } 
 
             /* Assert */
             expect(client.$transaction).toHaveBeenCalledTimes(1);
+            expect(err).toBeDefined();
+            expect(err).toBeInstanceOf(Error);
         });
 
         it('Should execute all queries in a transaction and commit if all succeed', async() => {

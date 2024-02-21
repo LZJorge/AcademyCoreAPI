@@ -1,9 +1,9 @@
-import { TransactionManager } from '@shared/infrastructure/repository/transaction.manager';
 import { FindOneStudentResponse } from '@student/application/responses/find-one-student.response';
 import { Student } from '@student/domain/entity/student.entity';
 import { StudentNotFoundError } from '@student/domain/exceptions/student-not-found.exception';
 import { IStudentRepository } from '@student/domain/repository/student.repository';
 import { Transaction } from '@shared/domain/repositories/transaction';
+import { ITransactionManager } from '@shared/domain/repositories/transaction.manager';
 
 /**
  * Finds a student by their DNI using the provided student repository and transaction manager.
@@ -13,7 +13,7 @@ import { Transaction } from '@shared/domain/repositories/transaction';
  * @param {TransactionManager} manager - The transaction manager for handling the database transaction
  * @return {Promise<FindOneStudentResponse>} An object containing the success status and the student found
  */
-export async function findOneStudentByUserDni(dni: string, repository: IStudentRepository, manager: TransactionManager): Promise<FindOneStudentResponse> {
+export async function findOneStudentByUserDni(dni: string, repository: IStudentRepository, manager: ITransactionManager): Promise<FindOneStudentResponse> {
     // Main Transaction object
     const transaction = new Transaction();
 

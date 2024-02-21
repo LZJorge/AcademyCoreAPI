@@ -38,18 +38,19 @@ export function generateManyFakeUser(amount: number): User[] {
 /**
  * Creates Fake Student with his user
  */
-export function generateFakeStudent(): Student {
+export function generateFakeStudent(): Required<Student> {
     const user = generateFakeUser();
+
     return new Student({
         id: faker.string.uuid(),
         courses_completed: faker.number.int({ min: 0, max: 12 }),
         is_active: faker.datatype.boolean(),
         user_id: user.id,
         user
-    });
+    }) as Required<Student>;
 }
-export function generateManyFakeStudent(amount: number): Student[] {
-    const students: Student[] = [];
+export function generateManyFakeStudent(amount: number): Required<Student>[] {
+    const students: Required<Student>[] = [];
     for(let i = 1; i <= amount; i++) {
         students.push(generateFakeStudent());
     }

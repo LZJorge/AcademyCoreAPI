@@ -26,7 +26,7 @@ export class TransactionManager implements ITransactionManager {
      * 
      * return result; // [{...user}, [{ ...someTeacher }, {...someTeacher}]]
      */
-    async commit<T extends Entity | Entity[]>(transaction: Transaction): Promise<T[]> {
+    async commit<T extends Entity | Entity[]>(transaction: Transaction): Promise<(T | null)[]> {
         await this.client.$connect();
 
         const transactions = transaction.get();

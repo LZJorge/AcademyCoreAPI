@@ -10,5 +10,5 @@ import { Transaction } from '@shared/domain/repositories/transaction';
  * This allows you to group several transactions into one unit of work, so if any error occurs during this unit of work, all the transactions will fail
  */
 export interface ITransactionManager {
-    commit<T extends Entity | Entity[]>(transactions: Transaction): Promise<T[]>;
+    commit<T extends Entity | Entity[]>(transactions: Transaction): Promise<(T | null)[]>;
 }

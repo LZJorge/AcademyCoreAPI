@@ -1,6 +1,6 @@
 {
   "name": "AcademyCoreAPI",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "API for management of students from a university or academy",
   "main": "dist/index.js",
   "private": false,
