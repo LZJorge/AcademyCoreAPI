@@ -3,8 +3,8 @@ export interface Success<T> {
     isSuccess: true;
     value: T;
 }
-export interface Failure<E extends BaseError | Array<unknown>> {
+export interface Failure<E extends BaseError> {
     isSuccess: false;
     error: E;
 }
-export type Result<T, E extends BaseError | Array<unknown> = never> = Success<T> | Failure<E>;
+export type Result<T, E extends BaseError = never> = Success<T> | Failure<E>;

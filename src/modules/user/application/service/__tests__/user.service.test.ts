@@ -1,69 +1,53 @@
-import { mockReset, mockDeep, DeepMockProxy } from 'jest-mock-extended';
-import { prismaMock } from '@tests/lib/mocks/prisma.mock';
-import { UserService } from '@user/application/user.service';
-import { UserRepository } from '@user/infrastructure/repository/user.repository';
+import { mockReset } from 'jest-mock-extended';
+import { UserService } from '@user/application/service/user.service';
 import { User } from '@user/domain/entity/user.entity';
 import { generateFakeUser } from '@tests/utils/mocks/user.fake';
+import { managerMock } from '@shared/domain/repositories/mocks/transaction.manager.mock';
+import { userRepositoryMock } from '@user/domain/repository/mocks/user.repository.mock';
 
-/* UseCases imports */
+/**
+ * Usecases
+ * Mocks
+ */
 import { createUser } from '@user/application/useCases/create';
-jest.mock('@user/application/useCases/create', () => ({
-    createUser: jest.fn().mockImplementation(() => mockDeep<typeof createUser>())
-}));
+jest.mock('@user/application/useCases/create');
 
 import { findOneUserById } from '@user/application/useCases/find-one-by-id';
-jest.mock('@user/application/useCases/find-one-by-id', () => ({
-    findOneUserById: jest.fn().mockImplementation(() => mockDeep<typeof findOneUserById>())
-}));
+jest.mock('@user/application/useCases/find-one-by-id');
 
 import { findOneUserByDni } from '@user/application/useCases/find-one-by-dni';
-jest.mock('@user/application/useCases/find-one-by-dni', () => ({
-    findOneUserByDni: jest.fn().mockImplementation(() => mockDeep<typeof findOneUserByDni>())
-}));
+jest.mock('@user/application/useCases/find-one-by-dni');
 
 import { findAllUser } from '@user/application/useCases/find-all';
-jest.mock('@user/application/useCases/find-all', () => ({
-    findAllUser: jest.fn().mockImplementation(() => mockDeep<typeof findAllUser>())
-}));
+jest.mock('@user/application/useCases/find-all');
 
 import { findAllUserByParam } from '@user/application/useCases/find-all-by-param';
-jest.mock('@user/application/useCases/find-all-by-param', () => ({
-    findAllUserByParam: jest.fn().mockImplementation(() => mockDeep<typeof findAllUserByParam>())
-}));
+jest.mock('@user/application/useCases/find-all-by-param');
 
 import { findAndUpdateUser } from '@user/application/useCases/update';
-jest.mock('@user/application/useCases/update', () => ({
-    findAndUpdateUser: jest.fn().mockImplementation(() => mockDeep<typeof findAndUpdateUser>())
-}));
+jest.mock('@user/application/useCases/update');
 
-import { updateUserDNI } from '@user/application/useCases/update-dni';
-jest.mock('@user/application/useCases/update-dni', () => ({
-    updateUserDNI: jest.fn().mockImplementation(() => mockDeep<typeof updateUserDNI>())
-}));
+import { findAndUpdateUserDNI } from '@user/application/useCases/update-dni';
+jest.mock('@user/application/useCases/update-dni');
 
-/* Dto imports */
+/**
+ * DTOs
+ */
 import { ICreateUserDto } from '@user/application/dto/create-user.dto';
 import { IUpdateUserDto } from '@user/application/dto/update-user.dto';
 import { FindAllByDto } from '@user/application/dto/find-all-by.dto';
 import { IDniDto } from '@user/application/dto/dni.dto';
 
-jest.mock('@user/infrastructure/repository/user.repository', () => ({
-    __esModule: true,
-    UserRepository: jest.fn().mockImplementation(() => mockDeep<UserRepository>())
-}));
-const repositoryMock = new UserRepository(prismaMock) as unknown as DeepMockProxy<UserRepository>;
-beforeEach( () => {
-    mockReset(repositoryMock);
-});
-
 describe('User Service tests', () => {
-    const repository = repositoryMock;
+    const repository = userRepositoryMock;
     let service: UserService,
         user: User;
 
     beforeEach( () => {
+        mockReset(repository);
+
         user = generateFakeUser();
-        service = new UserService(repository);
+        service = new UserService(repository, managerMock);
     });
 
     /**
@@ -73,7 +57,7 @@ describe('User Service tests', () => {
         it('should create user from provided dto:', async () => {
             const createUserDto: ICreateUserDto = { ...user };
             await service.create(createUserDto);
-            expect(createUser).toHaveBeenCalledWith(createUserDto, repository);
+            expect(createUser).toHaveBeenCalledWith(createUserDto, repository, managerMock);
         });
     });
 
@@ -83,17 +67,17 @@ describe('User Service tests', () => {
     describe('Find User UseCases', () => {
         it('should find one user by his id:', async () => {
             await service.findOneByID(user.id);
-            expect(findOneUserById).toHaveBeenCalledWith(user.id, repository);
+            expect(findOneUserById).toHaveBeenCalledWith(user.id, repository, managerMock);
         });
 
         it('should find one user by his dni:', async () => {
             await service.findOneByDNI(user.dni);
-            expect(findOneUserByDni).toHaveBeenCalledWith(user.dni, repository);
+            expect(findOneUserByDni).toHaveBeenCalledWith(user.dni, repository, managerMock);
         });
 
         it('should find all users:', async () => {
             await service.findAll();
-            expect(findAllUser).toHaveBeenCalledWith(repository);
+            expect(findAllUser).toHaveBeenCalledWith(repository, managerMock);
         });
 
         it('should find all users by some user param:', async () => {
@@ -101,7 +85,7 @@ describe('User Service tests', () => {
             repository.findAllBy.mockResolvedValue([user]);
 
             await service.findAllBy(findAllByDto);
-            expect(findAllUserByParam).toHaveBeenCalledWith(findAllByDto, repository);
+            expect(findAllUserByParam).toHaveBeenCalledWith(findAllByDto, repository, managerMock);
         });
     });
 
@@ -115,14 +99,14 @@ describe('User Service tests', () => {
             const updateUserDto: IUpdateUserDto = { ...newData };
             const updated = { ...user, ...newData };
             await service.updateInfo(updated.id, updateUserDto);
-            expect(findAndUpdateUser).toHaveBeenCalledWith(updated.id, updateUserDto, repository);
+            expect(findAndUpdateUser).toHaveBeenCalledWith({ id: updated.id, dto: updateUserDto}, repository, managerMock);
         });
 
         it('should return updated dni user:', async () => {
             const updated = { ...user, dni: newData.dni };
             const dto: IDniDto = { dni: updated.dni };
             await service.updateDNI(updated.id, dto);
-            expect(updateUserDNI).toHaveBeenCalledWith(updated.id, dto, repository);
+            expect(findAndUpdateUserDNI).toHaveBeenCalledWith({ id: updated.id, dto }, repository, managerMock);
         });
     });
 });

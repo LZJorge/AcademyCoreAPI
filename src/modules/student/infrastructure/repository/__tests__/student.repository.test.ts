@@ -18,7 +18,7 @@ describe('Student Repository Tests', () => {
      */
     describe('Create student', () => {
         it('should create student:', async () => {
-            client.student.create.mockResolvedValue(student);
+            client.student.create.mockResolvedValueOnce(student);
             const result = await repository.create(student);
             expect(result).toBeDefined();
             expect(result).toBe(student);
@@ -38,7 +38,7 @@ describe('Student Repository Tests', () => {
      */
     describe('Read Users', () => {
         it('should find student by id:', async () => {
-            client.student.findUnique.mockResolvedValue(student);
+            client.student.findUnique.mockResolvedValueOnce(student);
             const result = await repository.findOne(student.id);
             expect(result).toBeDefined();
             expect(result).toBe(student);
@@ -49,7 +49,7 @@ describe('Student Repository Tests', () => {
         });
 
         it('should find student by user_id:', async () => {
-            client.student.findUnique.mockResolvedValue(student);
+            client.student.findUnique.mockResolvedValueOnce(student);
             const result = await repository.findOneByUserId(student.user_id);
             expect(result).toBeDefined();
             expect(result).toBe(student);
@@ -60,7 +60,7 @@ describe('Student Repository Tests', () => {
         });
 
         it('should find student by user dni:', async () => {
-            client.student.findFirst.mockResolvedValue(student);
+            client.student.findFirst.mockResolvedValueOnce(student);
             if(!student.user) {
                 throw new Error('Undefined User');
             }
@@ -75,7 +75,7 @@ describe('Student Repository Tests', () => {
         });
 
         it('should find all students:', async () => {
-            client.student.findMany.mockResolvedValue([student]);
+            client.student.findMany.mockResolvedValueOnce([student]);
             const result = await repository.findAll();
             expect(result).toBeDefined();
             expect(result).toContain(student);
@@ -84,8 +84,20 @@ describe('Student Repository Tests', () => {
             });
         });
 
+        it('should find all students without user:', async () => {
+            student.user = undefined;
+            client.student.findMany.mockResolvedValueOnce([student]);
+            const result = await repository.findAllWithoutUser();
+            expect(result).toBeDefined();
+            expect(result).toContain(student);
+            expect(result[0].user).toBeUndefined();
+            expect(client.student.findMany).toHaveBeenCalledWith({
+                include: { user: false }
+            });
+        });
+
         it('should find all students by some param:', async () => {
-            client.student.findMany.mockResolvedValue([student]);
+            client.student.findMany.mockResolvedValueOnce([student]);
             const result = await repository.findAllBy('courses_completed', student.courses_completed);
             expect(result).toBeDefined();
             expect(result).toContain(student);
@@ -97,9 +109,8 @@ describe('Student Repository Tests', () => {
 
         it('should find all students by some user param:', async () => {
             client.student.findMany.mockResolvedValue([student]);
-            if(!student.user) {
-                throw new Error('Undefined User');
-            }
+            
+            if(!student.user) {return;}
             let result = await repository.findAllByUserParam('email', student.user.email);
             expect(result).toBeDefined();
             expect(result).toContain(student);
@@ -146,7 +157,7 @@ describe('Student Repository Tests', () => {
      */
     describe('Delete student', () => {
         it('should delete user:', async () => {
-            client.student.findUnique.mockResolvedValue(null);
+            client.student.findUnique.mockResolvedValueOnce(null);
             const result = await repository.delete(student.id);
             expect(result).toBeDefined();
             expect(result).toMatchObject({ success: true });

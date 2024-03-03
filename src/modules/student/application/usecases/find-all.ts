@@ -18,10 +18,10 @@ export async function findManyStudents(repository: IStudentRepository, manager: 
     transaction.add(repository.findAll());
 
     // Execute transaction
-    let students = await manager.commit<Student[]>(transaction);
+    const students = await manager.commit<Student[]>(transaction);
 
     if(!students[0]) {
-        students[0] = []
+        students[0] = [];
     }
 
     return { isSuccess: true, value: students[0] };

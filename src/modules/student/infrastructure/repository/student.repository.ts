@@ -45,6 +45,12 @@ export class StudentRepository implements IStudentRepository {
             include: { user: true }
         });
     }
+
+    async findAllWithoutUser(): Promise<Student[]> {
+        return this.client.student.findMany({
+            include: { user: false }
+        });
+    }
     
     async findAllBy(param: keyof Student, value: unknown): Promise<Student[]> {
         return this.client.student.findMany({
@@ -60,7 +66,7 @@ export class StudentRepository implements IStudentRepository {
         });
     }
     
-    async update(data: Partial<Student>): Promise<Student | null> {
+    async update(data: Student): Promise<Student | null> {
         return this.client.student.update({
             where: { id: data.id },
             data: {

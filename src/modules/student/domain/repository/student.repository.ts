@@ -5,5 +5,7 @@ import { User } from '@user/domain/entity/user.entity';
 export interface IStudentRepository extends Repository<Student> {
     findOneByUserId(user_id: string): Promise<Student | null>;
     findOneByUserDni(user_dni: string): Promise<Student | null>;
-    findAllByUserParam(param: keyof User, value: unknown): Promise<Student[]>
+    findAllByUserParam(param: keyof User, value: unknown): Promise<Student[]>;
+
+    findAllWithoutUser(): Promise<Student[]>;
 }

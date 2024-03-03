@@ -15,11 +15,11 @@ describe('Find all students Usecase test', () => {
         // Assertions
         expect(managerMock.commit).toHaveBeenCalled();
         expect(response.isSuccess).toBeTruthy();
-        if(!response.isSuccess) return;
+        if(!response.isSuccess) {return;}
         expect(response.value).toHaveLength(students.length);
         expect(response.value).toEqual(students);
         expect(response.value).not.toBeNull();
-        expect(response.value).not.toBeUndefined();
+        expect(response.value).toBeDefined();
     });
 
     it('should find all students and return an empty array if no students found', async () => {
@@ -31,10 +31,10 @@ describe('Find all students Usecase test', () => {
         // Assertions
         expect(managerMock.commit).toHaveBeenCalled();
         expect(response.isSuccess).toBeTruthy();
-        if(!response.isSuccess) return;
+        if(!response.isSuccess) {return;}
         expect(response.value).toHaveLength(0);
         expect(response.value).toEqual([]);
         expect(response.value).not.toBeNull();
-        expect(response.value).not.toBeUndefined();
+        expect(response.value).toBeDefined();
     });
 });

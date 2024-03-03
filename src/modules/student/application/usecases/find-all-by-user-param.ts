@@ -30,7 +30,7 @@ export async function findManyStudentsByUserParam(dto: FindAllByDto, repository:
     let [students] = await manager.commit<Student[]>(transaction);
 
     if(!students) {
-        students = []
+        students = [];
     }
 
     return { isSuccess: true, value: students };

@@ -4,6 +4,11 @@ import { userSearchParams } from '@user/domain/values/canSearchUserBy';
 import { User } from '@user/domain/entity/user.entity';
 
 export enum UserExceptions {
+    CANT_SEARCH_BY_INVALID_PARAM = 'No se puede buscar por un parámetro inválido',
+    CANT_SEARCH_BY_INVALID_PARAMS = 'No se puede buscar por los parámetros proporcionados',
+
+    DNI_ALREADY_EXISTS = 'La cédula ya existe',
+
     USER_NOT_FOUND = 'No se encontró ningún usuario mediante el parámetro proporcionado',
     INVALID_DNI = 'Ha introducido una cédula inválida',
 
@@ -17,18 +22,46 @@ export enum UserExceptions {
     INVALID_PHONE_LENGTH = 'Ha introducido un numero de teléfono inválido'
 }
 
+/**
+ * 
+ */
 export class UserNotFoundError extends BaseError {
     declare data: {
         field: string;
         value: string;
     };
 
+    /**
+     * Constructor for creating a new instance.
+     *
+     * @param {'id' | 'dni'} field - the field where the user was not found
+     * @param {string} value - the value of the field
+     * @return {void} 
+     */
     constructor(field: 'id' | 'dni', value: string) {
         super(UserExceptions.USER_NOT_FOUND, HttpStatus.NOT_FOUND, { field, value });
         this.data = { field, value };
     }
 }
 
+
+/**
+ * 
+ */
+export class UserDniAlreadyExistsError extends BaseError {
+    declare data: {
+        dni: string;
+    };
+    
+    constructor(dni: string) {
+        super(UserExceptions.DNI_ALREADY_EXISTS, HttpStatus.BAD_REQUEST, { dni });
+        this.data = { dni };
+    }
+}
+
+/**
+ * 
+ */
 export class CantSearchUserByInvalidParamError extends BaseError {
     declare data: {
         param: string;
@@ -37,7 +70,7 @@ export class CantSearchUserByInvalidParamError extends BaseError {
     };
     
     constructor(param: string, value: unknown) {
-        super('Invalid user search param', HttpStatus.BAD_REQUEST, { param, value, valid_params: userSearchParams });
+        super(UserExceptions.CANT_SEARCH_BY_INVALID_PARAM, HttpStatus.BAD_REQUEST, { param, value, valid_params: userSearchParams });
         this.data = { param, value, valid_params: userSearchParams };
     }
 }

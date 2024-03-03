@@ -2,7 +2,7 @@ import { findOneStudentById } from '@student/application/usecases/find-one-by-id
 import { studentRepositoryMock } from '@student/domain/repository/mocks/student.repository.mock';
 import { managerMock } from '@shared/domain/repositories/mocks/transaction.manager.mock';
 import { generateFakeStudent } from '@tests/utils/mocks/user.fake';
-import { StudentNotFoundError } from '@student/domain/exceptions/student-not-found.exception';
+import { StudentNotFoundError } from '@student/domain/exceptions/student.exceptions';
 
 describe('Find all students Usecase test', () => {
     const student = generateFakeStudent();
@@ -16,7 +16,7 @@ describe('Find all students Usecase test', () => {
         // Assertions
         expect(managerMock.commit).toHaveBeenCalled();
         expect(response.isSuccess).toBeTruthy();
-        if(!response.isSuccess) return;
+        if(!response.isSuccess) {return;}
         expect(response.value).toMatchObject(student);
     });
 
@@ -29,7 +29,7 @@ describe('Find all students Usecase test', () => {
         // Assertions
         expect(managerMock.commit).toHaveBeenCalled();
         expect(response.isSuccess).toBeFalsy();
-        if(response.isSuccess) return;
+        if(response.isSuccess) {return;}
         expect(response.error).toBeInstanceOf(StudentNotFoundError);
     });
 });

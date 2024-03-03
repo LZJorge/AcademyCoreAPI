@@ -1,6 +1,6 @@
 import { FindOneStudentResponse } from '@student/application/responses/find-one-student.response';
 import { Student } from '@student/domain/entity/student.entity';
-import { StudentNotFoundError } from '@student/domain/exceptions/student-not-found.exception';
+import { StudentNotFoundError } from '@student/domain/exceptions/student.exceptions';
 import { IStudentRepository } from '@student/domain/repository/student.repository';
 import { Transaction } from '@shared/domain/repositories/transaction';
 import { ITransactionManager } from '@shared/domain/repositories/transaction.manager';
