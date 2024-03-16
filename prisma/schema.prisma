@@ -36,12 +36,12 @@ model Student {
   user              User      @relation(fields: [user_id], references: [id])
   user_id           String    @unique
 
-  section           Student_Section[]
+  section           Student_section[]
 }
 
-model Student_Password {
+model Student_password {
   id              String  @id @unique
-  password        String
+  value           String
   student_id      String  @unique
 }
 
@@ -53,12 +53,12 @@ model Teacher {
   user_id     String  @unique
 
   section Section[]
-  course  Teacher_Course[]
+  course  Teacher_course[]
 }
 
-model Teacher_Password {
+model Teacher_password {
   id              String  @id @unique
-  password        String
+  value        String
   teacher_id      String  @unique
 }
 
@@ -67,7 +67,7 @@ model Course {
   id       String @id @unique
   name     String
 
-  teacher  Teacher_Course[]
+  teacher  Teacher_course[]
   section  Section[]
 }
 
@@ -78,7 +78,7 @@ model Section {
   remaining_quotas Int
   schedule         DateTime
 
-  student          Student_Section[]
+  student          Student_section[]
 
   course           Course   @relation(fields: [course_id], references: [id])
   course_id        String
@@ -88,7 +88,7 @@ model Section {
 }
 
 // @Relations
-model Student_Section {
+model Student_section {
   id          String  @id @unique
 
   student     Student @relation(fields: [student_id], references: [id])
@@ -98,7 +98,7 @@ model Student_Section {
   section_id  String
 }
 
-model Teacher_Course {
+model Teacher_course {
   id          String  @id @unique
 
   teacher     Teacher @relation(fields: [teacher_id], references: [id])

@@ -4,6 +4,17 @@ import { userValues } from '@user/domain/values/user.values';
 import { Student } from '@student/domain/entity/student.entity';
 
 /**
+ * Helper functions
+ */
+export function generateFakeID(): string {
+    return faker.string.uuid();
+}
+
+export function generateFakePassword(): string {
+    return faker.internet.password();
+}
+
+/**
  * Creates Fake User
  */
 function generateDni(): string {
