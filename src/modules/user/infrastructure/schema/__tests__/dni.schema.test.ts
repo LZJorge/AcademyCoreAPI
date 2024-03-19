@@ -19,7 +19,7 @@ describe('Create user schema test', () => {
         expect(result.value).toMatchObject(dni);
     });
 
-    it('should return isSuccess = false, if dni is invalid', async () => {
+    it('should not pass if dni is invalid', async () => {
         const result = await schema.validate({
             dni: 'XXX'
         });

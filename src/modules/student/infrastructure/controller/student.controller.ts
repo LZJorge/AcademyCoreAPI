@@ -4,10 +4,13 @@ import { StudentService } from '@student/application/service/student.service';
 /**
  * Schemas
  */
-import { CreateUserSchema } from '@user/infrastructure/schema/create-user.schema';
+import { CreateStudentSchema } from '@student/infrastructure/schema/create-student.schema';
 import { UpdateUserSchema } from '@user/infrastructure/schema/update-user.schema';
 
 import { HttpStatus } from '@shared/domain/exceptions/http.statusCodes';
+import { UpdateStudentStatusSchema } from '@student/infrastructure/schema/update-stude-status.schema';
+import { DniSchema } from '@user/infrastructure/schema/dni.schema';
+import { User } from '@user/domain/entity/user.entity';
 
 export class StudentController {
     constructor(private readonly service: StudentService) {}
@@ -20,10 +23,13 @@ export class StudentController {
      * @return {Promise<Response>} the response from the create operation
      */
     async create(req: Request, res: Response): Promise<Response> {
-        const { firstname, lastname, dni, email, birthdate, phone } = req.body;
-        const data = { firstname, lastname, dni, email, birthdate, phone };
+        const { firstname, lastname, dni, email, birthdate, phone, password } = req.body;
+        const data = {
+            student_password: password,
+            user: { firstname, lastname, dni, email, birthdate, phone }
+        };
 
-        const validation = await new CreateUserSchema().validate(data);
+        const validation = await new CreateStudentSchema().validate(data);
         if (!validation.isSuccess) {
             return res.status(validation.error.statusCode).json(validation);
         }
@@ -80,6 +86,24 @@ export class StudentController {
     }
 
     /**
+     * Finds many entities filtered by some user parameter.
+     *
+     * @param {Request} req - the request object
+     * @param {Response} res - the response object
+     * @return {Promise<Response>} the response object
+     */
+    async findManyByUserParam(req: Request, res: Response): Promise<Response> {
+        const { param, value } = req.params;
+
+        const response = await this.service.findManyByUserParam(param as keyof User, value);
+        if (!response.isSuccess) {
+            return res.status(response.error.statusCode).json(response);
+        }
+
+        return res.status(200).json(response);
+    }
+
+    /**
      * Updates the request and response objects.
      *
      * @param {Request} req - the request object
@@ -95,17 +119,57 @@ export class StudentController {
             return res.status(validation.error.statusCode).json(validation);
         }
 
-        return res.status(200).json();
+        const response = await this.service.updateUser(req.params.id, data);
+        if (!response.isSuccess) {
+            return res.status(response.error.statusCode).json(response);
+        }
+
+        return res.status(200).json(response);
     }
 
     /**
-     * Delete a resource.
+     * Updates the user's DNI.
      *
      * @param {Request} req - the request object
      * @param {Response} res - the response object
-     * @return {Promise<Response>} the response object
+     * @return {Promise<Response>} the updated user's DNI response
      */
-    async delete(req: Request, res: Response): Promise<Response> {
-        return res.status(200).json();
+    async updateUserDni(req: Request, res: Response): Promise<Response> {
+        const { dni } = req.body;
+
+        const validation = await new DniSchema().validate({ dni });
+        if (!validation.isSuccess) {
+            return res.status(validation.error.statusCode).json(validation);
+        }
+
+        const response = await this.service.updateUserDni(req.params.id, dni);
+        if (!response.isSuccess) {
+            return res.status(response.error.statusCode).json(response);
+        }
+
+        return res.status(200).json(response);
+    }
+
+    /**
+     * Updates the active status of a student.
+     *
+     * @param {Request} req - request object
+     * @param {Response} res - response object
+     * @return {Promise<Response>} response object
+     */
+    async updateStudentStatus(req: Request, res: Response): Promise<Response> {
+        const { is_active } = req.body;
+
+        const validation = await new UpdateStudentStatusSchema().validate({ is_active });
+        if (!validation.isSuccess) {
+            return res.status(validation.error.statusCode).json(validation);
+        }
+
+        const response = await this.service.updateStudentStatus(req.params.id, is_active);
+        if (!response.isSuccess) {
+            return res.status(response.error.statusCode).json(response);
+        }
+
+        return res.status(200).json(response);
     }
 }

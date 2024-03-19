@@ -5,6 +5,7 @@ import { User } from '@user/domain/entity/user.entity';
  */
 import { IUserRepository } from '@user/domain/repository/user.repository';
 import { IStudentRepository } from '@student/domain/repository/student.repository';
+import { IStudentPasswordRepository } from '@student/domain/repository/password.repository';
 import { ITransactionManager } from '@shared/domain/repositories/transaction.manager';
 
 /**
@@ -23,7 +24,7 @@ import { findAndUpdateUserDNI } from '@user/application/useCases/update-dni';
 /**
  * Dtos
  */
-import { ICreateUserDto } from '@user/application/dto/create-user.dto';
+import { ICreateStudentDto } from '@student/application/dto/create-student.dto';
 import { IUpdateUserDto } from '@user/application/dto/update-user.dto';
 import { IDniDto } from '@user/application/dto/dni.dto';
 
@@ -38,7 +39,8 @@ import { UpdateStudentResponse } from '@student/application/responses/update-stu
 
 interface RequiredRepositories {
     user: IUserRepository,
-    student: IStudentRepository
+    student: IStudentRepository,
+    student_password: IStudentPasswordRepository
 }
 
 export class StudentService {
@@ -50,11 +52,15 @@ export class StudentService {
     /**
      * Creates a user using the provided data.
      *
-     * @param {ICreateUserDto} data - the data for creating the user
+     * @param {ICreateStudentDto} data - the data for creating the user
      * @return {Promise<CreateStudentResponse>} the response after creating the user
      */
-    async create(data: ICreateUserDto): Promise<CreateStudentResponse> {
-        return await createStudent(data, { user: this.repositories.user, student: this.repositories.student }, this.manager);
+    async create(data: ICreateStudentDto): Promise<CreateStudentResponse> {
+        return await createStudent(data, { 
+            user: this.repositories.user, 
+            student: this.repositories.student, 
+            student_password: this.repositories.student_password 
+        }, this.manager);
     }
 
     /**

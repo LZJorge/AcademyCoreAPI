@@ -40,11 +40,11 @@ export class StudentPasswordRepository implements IStudentPasswordRepository {
         throw new NotUsableMethodException('StudentPassword', 'findAll');
     }
 
-    async findAllBy(param: keyof StudentPassword, value: unknown): Promise<StudentPassword[]> {
+    async findAllBy(/* param: keyof StudentPassword, value: unknown */): Promise<StudentPassword[]> {
         throw new NotUsableMethodException('StudentPassword', 'findAllBy');
     }
 
-    async delete(id: string): Promise<{ success: boolean; }> {
+    async delete(/* id: string */): Promise<{ success: boolean; }> {
         throw new NotUsableMethodException('StudentPassword', 'delete');
     }
 }

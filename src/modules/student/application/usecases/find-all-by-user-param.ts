@@ -16,13 +16,13 @@ import { Transaction } from '@shared/domain/repositories/transaction';
  * @return {Promise<FindManyStudentsResponse>} a promise that resolves to the response of finding many students
  */
 export async function findManyStudentsByUserParam(dto: FindAllByDto, repository: IStudentRepository, manager: ITransactionManager): Promise<FindManyStudentsResponse>  {
-    // Main Transaction object
-    const transaction = new Transaction();
-
     // Verify if search param is valid
     if(!canSearchUserByParam(dto.param)) {
         return { isSuccess: false, error: new CantSearchUserByInvalidParamError(dto.param, dto.value) };
     }
+
+    // Main Transaction object
+    const transaction = new Transaction();
     
     transaction.add(repository.findAllByUserParam(dto.param, dto.value));
 

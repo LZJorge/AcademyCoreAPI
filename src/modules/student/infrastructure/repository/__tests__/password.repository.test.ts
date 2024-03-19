@@ -106,7 +106,7 @@ describe('Student Repository Tests', () => {
                 let error;
 
                 try {
-                    await repository.findAllBy('id', studentPassword.id);
+                    await repository.findAllBy(/* 'id', studentPassword.id */);
                 } catch (e) {
                     error = e;
                 }
@@ -121,7 +121,7 @@ describe('Student Repository Tests', () => {
                 let error;
     
                 try {
-                    await repository.delete(studentPassword.id);
+                    await repository.delete(/* studentPassword.id */);
                 } catch (e) {
                     error = e;
                 }

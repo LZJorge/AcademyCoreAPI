@@ -19,7 +19,7 @@ describe('Update user schema test', () => {
         expect(result.value).toMatchObject(user);
     });
 
-    it('should return isSuccess = false, if firstname is invalid', async () => {
+    it('should not pass if firstname is invalid', async () => {
         const result = await schema.validate({
             ...user,
             firstname: 'X'
@@ -31,7 +31,7 @@ describe('Update user schema test', () => {
         expect(result.error).toBeInstanceOf(EntityValidationError);
     });
 
-    it('should return isSuccess = false, if lastname is invalid', async () => {
+    it('should not pass if lastname is invalid', async () => {
         const result = await schema.validate({
             ...user,
             lastname: 'X'
@@ -43,7 +43,7 @@ describe('Update user schema test', () => {
         expect(result.error).toBeInstanceOf(EntityValidationError);
     });
 
-    it('should return isSuccess = false, if birthdate is invalid', async () => {
+    it('should not pass if birthdate is invalid', async () => {
         const result = await schema.validate({
             ...user,
             birthdate: 'X' as any
@@ -55,7 +55,7 @@ describe('Update user schema test', () => {
         expect(result.error).toBeInstanceOf(EntityValidationError);
     });
 
-    it('should return isSuccess = false, if email is invalid', async () => {
+    it('should not pass if email is invalid', async () => {
         const result = await schema.validate({
             ...user,
             email: 'X'
@@ -67,7 +67,7 @@ describe('Update user schema test', () => {
         expect(result.error).toBeInstanceOf(EntityValidationError);
     });
 
-    it('should return isSuccess = false, if phone is invalid', async () => {
+    it('should not pass if phone is invalid', async () => {
         const result = await schema.validate({
             ...user,
             phone: '0123-'

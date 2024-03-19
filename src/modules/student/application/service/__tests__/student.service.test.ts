@@ -3,6 +3,7 @@
  */
 import { userRepositoryMock } from '@user/domain/repository/mocks/user.repository.mock';
 import { studentRepositoryMock } from '@student/domain/repository/mocks/student.repository.mock';
+import { studentPasswordRepositoryMock } from '@student/domain/repository/mocks/password.repository.mock';
 import { managerMock } from '@shared/domain/repositories/mocks/transaction.manager.mock';
 
 /**
@@ -38,7 +39,7 @@ jest.mock('@user/application/useCases/update-dni');
 /**
  * Dtos
  */
-import { ICreateUserDto } from '@user/application/dto/create-user.dto';
+import { ICreateStudentDto } from '@student/application/dto/create-student.dto';
 import { IUpdateUserDto } from '@user/application/dto/update-user.dto';
 import { IDniDto } from '@user/application/dto/dni.dto';
 
@@ -47,14 +48,14 @@ import { IDniDto } from '@user/application/dto/dni.dto';
  */
 import { StudentService } from '@student/application/service/student.service';
 import { mockReset } from 'jest-mock-extended';
-import { generateFakeStudent } from '@tests/utils/mocks/user.fake';
+import { generateFakePassword, generateFakeStudent } from '@tests/utils/mocks/user.fake';
 
 describe('Student service test', () => {
     let service: StudentService;
     const student = generateFakeStudent();
 
     beforeEach(() => {
-        service = new StudentService({ user: userRepositoryMock, student: studentRepositoryMock }, managerMock);
+        service = new StudentService({ user: userRepositoryMock, student: studentRepositoryMock, student_password: studentPasswordRepositoryMock }, managerMock);
         mockReset(managerMock);
     });
 
@@ -63,19 +64,22 @@ describe('Student service test', () => {
      */
     describe('Create', () => {
         it('should call create student usecase', async () => {
-            const dto: ICreateUserDto = {
-                dni: student.user.dni,
-                firstname: student.user.firstname,
-                lastname: student.user.lastname,
-                birthdate: student.user.birthdate,
-                phone: student.user.phone,
-                email: student.user.email
+            const dto: ICreateStudentDto = {
+                student_password: generateFakePassword(),
+                user: {
+                    dni: student.user.dni,
+                    firstname: student.user.firstname,
+                    lastname: student.user.lastname,
+                    birthdate: student.user.birthdate,
+                    phone: student.user.phone,
+                    email: student.user.email
+                }
             };
 
             await service.create(dto);
             expect(createStudent).toHaveBeenCalledWith(
                 dto,
-                { user: userRepositoryMock, student: studentRepositoryMock },
+                { user: userRepositoryMock, student: studentRepositoryMock, student_password: studentPasswordRepositoryMock },
                 managerMock
             );
         });
