@@ -1,3 +1,4 @@
+import { mockReset } from 'jest-mock-extended';
 import { managerMock } from '@shared/domain/repositories/mocks/transaction.manager.mock';
 import { studentRepositoryMock } from '@student/domain/repository/mocks/student.repository.mock';
 import { generateFakeStudent } from '@tests/utils/mocks/user.fake';
@@ -11,6 +12,9 @@ describe('Update student courses usecase', () => {
 
     beforeEach(() => {
         newData = generateFakeStudent();
+
+        mockReset(managerMock);
+        mockReset(studentRepositoryMock);
     });
 
     it('should find one student by id and sum the courses completed', async () => {
@@ -21,7 +25,11 @@ describe('Update student courses usecase', () => {
 
         // Assertions
         if(!response.isSuccess) {return;}
+
         expect(managerMock.commit).toHaveBeenCalled();
+        expect(studentRepositoryMock.findOne).toHaveBeenCalledWith(student.id);
+        expect(studentRepositoryMock.update).toHaveBeenCalledWith({ ...student, courses_completed: student.courses_completed + newData.courses_completed });
+        
         expect(response.isSuccess).toBeTruthy();
         expect(response.value).toBeDefined();
         expect(response.value).toMatchObject({ ...student, courses_completed: student.courses_completed + newData.courses_completed });
@@ -35,7 +43,11 @@ describe('Update student courses usecase', () => {
 
         // Assertions
         if(response.isSuccess) {return;}
+
         expect(managerMock.commit).toHaveBeenCalled();
+        expect(studentRepositoryMock.findOne).toHaveBeenCalledWith(student.id);
+        expect(studentRepositoryMock.update).not.toHaveBeenCalled();
+
         expect(response.isSuccess).toBeFalsy();
         expect(response.error).toBeDefined();
         expect(response.error).toBeInstanceOf(StudentNotFoundError);

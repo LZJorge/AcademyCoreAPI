@@ -15,22 +15,36 @@ describe('Find one user by id Usecase test', () => {
     
     it('should find one user by his id:', async () => {
         managerMock.commit.mockResolvedValueOnce([user]);
+
+        // Execution
         const result = await findOneUserById(user.id, repository, managerMock);
-        expect(result.isSuccess).toBeTruthy();
+
+        // Assertions
         if(!result.isSuccess) {return;}
+
+        expect(managerMock.commit).toHaveBeenCalled();
+        expect(repository.findOne).toHaveBeenCalledWith(user.id);
+
+        expect(result.isSuccess).toBeTruthy();
         expect(result.value).toBeDefined();
         expect(result.value).toMatchObject(user);
-        expect(repository.findOne).toHaveBeenCalled();
     });
 
     it('should not find user if dont exist user by provided id:', async () => {
         managerMock.commit.mockResolvedValueOnce([null]);
+
+        // Execution
         const result = await findOneUserById('Wrong id', repository, managerMock);
-        expect(result.isSuccess).toBeFalsy();
+
+        // Assertions
         if(result.isSuccess) {return;}
+
+        expect(managerMock.commit).toHaveBeenCalled();
+        expect(repository.findOne).toHaveBeenCalledWith('Wrong id');
+
+        expect(result.isSuccess).toBeFalsy();
         expect(result.error).toBeDefined();
         expect(result.error.data).toBeDefined();
         expect(result.error).toBeInstanceOf(UserNotFoundError);
-        expect(repository.findOne).toHaveBeenCalled();
     });
 });

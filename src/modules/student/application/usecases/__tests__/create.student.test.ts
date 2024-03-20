@@ -28,7 +28,7 @@ describe('Create student Usecase test', () => {
         mockReset(userRepositoryMock);
         mockReset(studentRepositoryMock);
         mockReset(studentPasswordRepositoryMock);
-    })
+    });
 
     it('should create a new student and new user:', async () => {
         managerMock.commit.mockResolvedValueOnce([null]);

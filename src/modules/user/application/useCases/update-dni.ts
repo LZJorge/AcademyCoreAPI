@@ -26,7 +26,12 @@ export async function findAndUpdateUserDNI(data: {id: string, dto: IDniDto}, rep
     }
     
     // Update user
-    const updatedUser: User = { ...current, dni: data.dto.dni, id: data.id, updated_at: new Date() };
+    const updatedUser: User = { 
+        ...current, 
+        dni: data.dto.dni, 
+        id: data.id, 
+        updated_at: new Date() 
+    };
     transaction.add(repository.updateDni(updatedUser));
 
     // Commit changes
