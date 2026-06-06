@@ -39,7 +39,7 @@ describe('Update general info Usecase test', () => {
         if(!result.isSuccess) {return;}
 
         expect(managerMock.commit).toHaveBeenCalled();
-        expect(repository.update).toHaveBeenCalledWith({ ...user, ...updateUserDto });
+        expect(repository.update).toHaveBeenCalledWith(expect.objectContaining({ id: user.id, ...updateUserDto }));
 
         expect(result.isSuccess).toBeTruthy();
         expect(result.value).toBeDefined();

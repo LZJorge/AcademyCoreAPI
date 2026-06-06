@@ -164,10 +164,10 @@ git clone https://github.com/LZJorge/AcademyCoreAPI.git
 cd AcademyCoreAPI
 
 # 3. Install dependencies
-npm install
+pnpm install
 
 # 4. Compile TypeScript code
-npm run build
+pnpm build
 ```
 
 > 5. You must create a .env file, from the .env.example file included at the root of the project, which has the necessary environment variables that you need to fill/define to run the project. You should store the .env file at the root of your project, at the same level as package.json.
@@ -176,7 +176,7 @@ npm run build
 
 ```bash
 # 6. Start API server
-npm start
+pnpm start
 ```
 
 #### Testing
@@ -184,7 +184,7 @@ npm start
 
 ```bash
 # Use this to test api
-npm test
+pnpm test
 ```
 
 

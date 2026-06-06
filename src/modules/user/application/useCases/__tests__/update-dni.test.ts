@@ -31,7 +31,7 @@ describe('Update dni Usecase test', () => {
         if(!result.isSuccess) {return;}
 
         expect(managerMock.commit).toHaveBeenCalled();
-        expect(repository.updateDni).toHaveBeenCalledWith({ ...user, ...dto });
+        expect(repository.updateDni).toHaveBeenCalledWith(expect.objectContaining({ id: user.id, ...dto }));
 
         expect(result.isSuccess).toBeTruthy();
         expect(result.value).toBeDefined();

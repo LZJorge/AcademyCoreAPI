@@ -11,7 +11,7 @@
   "scripts": {
     "start": "cross-env NODE_ENV=production node dist/main.js",
     "build": "tsc && tsc-alias",
-    "dev": "cross-env NODE_ENV=development ts-node-dev -r tsconfig-paths/register src/modules/shared/infrastructure/repository/__tests__/transaction.manager.ts",
+    "dev": "cross-env NODE_ENV=development ts-node-dev src/main.ts",
     "test": "cross-env NODE_ENV=test jest --no-cache --verbose --detectOpenHandles",
     "test:watch": "cross-env NODE_ENV=test jest --watch --no-cache --verbose --detectOpenHandles",
     "lint": "eslint . --ext .ts",
@@ -21,15 +21,17 @@
   "keywords": [],
   "author": "Jorge Landaeta <dev.jorge2003@gmail.com>",
   "license": "GPL-3.0-only",
+  "packageManager": "pnpm@9.15.4",
   "engines": {
     "node": ">=20.10.0",
-    "npm": ">=10.2.3"
+    "pnpm": ">=9.0.0"
   },
   "devDependencies": {
     "@faker-js/faker": "^8.3.1",
     "@types/bcrypt": "^5.0.0",
     "@types/cookie-parser": "^1.4.3",
     "@types/cors": "^2.8.13",
+    "@types/express": "^5.0.6",
     "@types/jest": "^29.5.11",
     "@types/morgan": "^1.9.4",
     "@types/node": "^20.2.5",

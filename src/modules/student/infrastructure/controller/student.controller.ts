@@ -50,7 +50,7 @@ export class StudentController {
      * @return {Promise<Response>} The response object
      */
     async findOneById(req: Request, res: Response): Promise<Response> {
-        const response = await this.service.findOneById(req.params.id);
+        const response = await this.service.findOneById(req.params.id as string);
         if (!response.isSuccess) {
             return res.status(response.error.statusCode).json(response);
         }
@@ -66,7 +66,7 @@ export class StudentController {
      * @return {Promise<Response>} The response object
      */
     async findOneByDni(req: Request, res: Response): Promise<Response> {
-        const response = await this.service.findOneByDni(req.params.dni);
+        const response = await this.service.findOneByDni(req.params.dni as string);
         if (!response.isSuccess) {
             return res.status(response.error.statusCode).json(response);
         }
@@ -95,7 +95,7 @@ export class StudentController {
     async findManyByUserParam(req: Request, res: Response): Promise<Response> {
         const { param, value } = req.params;
 
-        const response = await this.service.findManyByUserParam(param as keyof User, value);
+        const response = await this.service.findManyByUserParam(param as keyof User, value as string);
         if (!response.isSuccess) {
             return res.status(response.error.statusCode).json(response);
         }
@@ -119,7 +119,7 @@ export class StudentController {
             return res.status(validation.error.statusCode).json(validation);
         }
 
-        const response = await this.service.updateUser(req.params.id, data);
+        const response = await this.service.updateUser(req.params.id as string, data);
         if (!response.isSuccess) {
             return res.status(response.error.statusCode).json(response);
         }
@@ -142,7 +142,7 @@ export class StudentController {
             return res.status(validation.error.statusCode).json(validation);
         }
 
-        const response = await this.service.updateUserDni(req.params.id, dni);
+        const response = await this.service.updateUserDni(req.params.id as string, dni);
         if (!response.isSuccess) {
             return res.status(response.error.statusCode).json(response);
         }
@@ -165,7 +165,7 @@ export class StudentController {
             return res.status(validation.error.statusCode).json(validation);
         }
 
-        const response = await this.service.updateStudentStatus(req.params.id, is_active);
+        const response = await this.service.updateStudentStatus(req.params.id as string, is_active);
         if (!response.isSuccess) {
             return res.status(response.error.statusCode).json(response);
         }
