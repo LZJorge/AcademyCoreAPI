@@ -1,3 +1,8 @@
+> [!WARNING]
+> **This project has been deprecated and archived.** > It has been completely redesigned and superseded by a new, enterprise-grade Clean Architecture version called **Escala**. 
+> 
+> 👉 **[Click here to visit the new repository (Escala Backend)](https://github.com/LZJorge/escala-backend)**
+
 # Academy Core API
 > API for management of students from a university or academy
 
